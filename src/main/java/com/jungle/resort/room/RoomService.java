@@ -1,5 +1,6 @@
 package com.jungle.resort.room;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jungle.resort.domain.Room;
+import com.jungle.resort.domain.RoomStatus;
 import com.jungle.resort.repositories.RoomDAO;
 
 @Service
@@ -39,8 +41,14 @@ public class RoomService implements IRoomService{
 
 	@Override
 	public List<Room> getAllAvailableRoom() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Room> allRooms=  (List<Room>) roomdao.findAll();
+		List<Room> avaialbleRooms= new ArrayList<Room>();
+		for(Room r: allRooms){
+			if(r.getRoomStatus().equals(RoomStatus.Available)){
+				avaialbleRooms.add(r);
+			}
+		}
+		return avaialbleRooms ;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.jungle.resort.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -7,6 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.jungle.resort.annotations.DropdownSelect;
+import com.jungle.resort.annotations.UniqueRoomNo;
 
 
 @Entity
@@ -15,53 +23,66 @@ public class Room {
 	@GeneratedValue
 	private int id;
 	
+	@NotNull(message="Please enter Room No")
 	@Min(value=1)
-	private int dailyRent;
+	@Column(unique=true)
+	//@UniqueRoomNo(message="Room No already exits")
+	private Integer roomNo;
+	
+	@Min(value=1)
+	@NotNull(message="Please enter Rent Amount")
+	private Integer dailyRent;
 	
 	@Enumerated(EnumType.STRING)
-	private RoomStatus status;
+	@NotNull(message="Please select Room Status")
+//	@DropdownSelect(message="Please select one")
+	private RoomStatus roomStatus;
 
+//	@DropdownSelect(message="Please select one")
 	@Enumerated(EnumType.STRING)
-	private RoomType type;
+	@NotNull(message="Please select Room Type")
+	private RoomType roomType;
 	
+//	@DropdownSelect(message="Please select one")
 	@Enumerated(EnumType.STRING)
-	private RoomCategory category;
+	@NotNull(message = "Please select Room Category")
+	private RoomCategory roomCategory;
 	
 	@Lob
 	private byte[] image;
 	
 	public Room(){};
 
-	public int getDailyRent() {
+	public Integer getDailyRent() {
 		return dailyRent;
 	}
 
-	public void setDailyRent(int dailyRent) {
+	public void setDailyRent(Integer dailyRent) {
 		this.dailyRent = dailyRent;
 	}
 
-	public RoomStatus getStatus() {
-		return status;
+	public RoomStatus getRoomStatus() {
+		return roomStatus;
 	}
 
-	public void setStatus(RoomStatus status) {
-		this.status = status;
+	public void setRoomStatus(RoomStatus roomStatus) {
+		this.roomStatus = roomStatus;
 	}
 
-	public RoomType getType() {
-		return type;
+	public RoomType getRoomType() {
+		return roomType;
 	}
 
-	public void setType(RoomType type) {
-		this.type = type;
+	public void setRoomType(RoomType roomType) {
+		this.roomType = roomType;
 	}
 
-	public RoomCategory getCategory() {
-		return category;
+	public RoomCategory getRoomCategory() {
+		return roomCategory;
 	}
 
-	public void setCategory(RoomCategory category) {
-		this.category = category;
+	public void setRoomCategory(RoomCategory roomCategory) {
+		this.roomCategory = roomCategory;
 	}
 
 	public byte[] getImage() {
@@ -71,5 +92,20 @@ public class Room {
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
+
+	public Integer getRoomNo() {
+		return roomNo;
+	}
+
+	public void setRoomNo(Integer roomNo) {
+		this.roomNo = roomNo;
+	}
+
+	public int getId() {
+		return id;
+	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
 }
