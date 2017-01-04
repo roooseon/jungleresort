@@ -38,11 +38,13 @@ div {
 
 <body>
 	<div>
-	
-		<form:form modelAttribute="room" method="POST" action="/updateroom/${room.id}"
-			enctype="multipart/form-data">
-			<h2><strong>Update Room</strong></h2>
-			
+
+		<form:form modelAttribute="room" method="POST"
+			action="/updateroom/${room.id}" enctype="multipart/form-data">
+			<h2>
+				<strong>Update Room</strong>
+			</h2>
+
 			<!-- 			<h2> Language : <a href="?lang=en">English</a>|<a href="?lang=np">Nepali</a></h2> -->
 			<!-- 			<h2>Add Car Information</h2> -->
 			<table>
@@ -91,12 +93,13 @@ div {
 					<td><form:errors path="roomCategory" cssStyle="color:red;" /></td>
 				</tr>
 
-<!-- 				<tr> -->
+				<tr>
+					<td><form:label path="tempImg">Image</form:label></td>
+					<td><form:input type="file" path="tempImg"
+							accept=".jpg, .png, .jpeg" /></td>
+					<td><span class="colorRed">${imageType}</span></td>
+				</tr>
 
-<%-- 					<td><form:label path="image">Image</form:label></td> --%>
-<%-- 					<td><form:input type="file" path="tempImg" /></td> --%>
-
-<!-- 				</tr> -->
 
 				<tr>
 					<td colspan="2"><input type="submit" value="Submit" /></td>

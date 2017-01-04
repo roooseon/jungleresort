@@ -47,7 +47,8 @@ div {
 
 				<tr>
 					<td><form:label path="roomNo">Room No</form:label></td>
-					<td><form:input path="roomNo" type="number" /></td>
+					<td><form:input path="roomNo" name="testRoom" type="number" /></td>
+
 					<td><form:errors path="roomNo" cssStyle="color:red;" /></td>
 					<td><span class="colorRed">${errorMessage}</span></td>
 				</tr>
@@ -89,12 +90,12 @@ div {
 					<td><form:errors path="roomCategory" cssStyle="color:red;" /></td>
 				</tr>
 
-<!-- 				<tr> -->
-
-<%-- 					<td><form:label path="image">Image</form:label></td> --%>
-<%-- 					<td><form:input type="file" path="tempImg" /></td> --%>
-
-<!-- 				</tr> -->
+				<tr>
+					<td><form:label path="tempImg">Image</form:label></td>
+					<td><form:input type="file" path="tempImg"
+							accept=".jpg, .png, .jpeg" /></td>
+					<td><span class="colorRed">${imageType}</span></td>
+				</tr>
 
 				<tr>
 					<td colspan="2"><input type="submit" value="Submit" /></td>

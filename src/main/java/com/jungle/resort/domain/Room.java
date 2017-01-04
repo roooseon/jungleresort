@@ -7,12 +7,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.jungle.resort.annotations.DropdownSelect;
 import com.jungle.resort.annotations.UniqueRoomNo;
 
@@ -51,6 +53,11 @@ public class Room {
 	@Lob
 	private byte[] image;
 	
+	@Transient
+	private MultipartFile tempImg;
+	
+	private String description;
+		
 	public Room(){};
 
 	public Integer getDailyRent() {
@@ -92,10 +99,36 @@ public class Room {
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
+	
+	
+	
+	public MultipartFile getTempImg() {
+		return tempImg;
+	}
+
+	public void setTempImg(MultipartFile tempImg) {
+		this.tempImg = tempImg;
+	}
 
 	public Integer getRoomNo() {
 		return roomNo;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+//	public CommonsMultipartFile[] getImages() {
+//		return images;
+//	}
+//
+//	public void setImages(CommonsMultipartFile[] images) {
+//		this.images = images;
+//	}
 
 	public void setRoomNo(Integer roomNo) {
 		this.roomNo = roomNo;

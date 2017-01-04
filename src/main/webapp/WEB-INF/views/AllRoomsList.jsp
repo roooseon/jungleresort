@@ -19,6 +19,7 @@
 			<th>Room Status</th>
 			<th>Room Category</th>
 			<th>Daily Rent</th>
+			<th>Image</th>
 		</tr>
 		<c:forEach items="${allrooms}" var="allrooms">
 			<tr>
@@ -27,6 +28,7 @@
 				<td>${allrooms.roomStatus}</td>
 				<td>${allrooms.roomCategory}</td>
 				<td>${allrooms.dailyRent}</td>
+				<td><img height="30px" width="30px" src =" ${allrooms.image}"/></td>
 
 				<!-- 				<td><img height="30px" width="30px" -->
 				<%-- 					src="../images/${car.id}.jpg" /></td> --%>
