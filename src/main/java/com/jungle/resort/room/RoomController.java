@@ -1,34 +1,28 @@
 package com.jungle.resort.room;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.jungle.resort.domain.Images;
 import com.jungle.resort.domain.Room;
 
 @Controller
@@ -56,35 +50,49 @@ public class RoomController {
 	}
 
 	@RequestMapping(value = "/addroom", method = RequestMethod.POST)
-	public String addRoom(@Valid Room room, BindingResult result, Model model, @RequestParam MultipartFile tempImg,
-			Exception exception) throws IOException {
+	public String addRoom(@Valid Room room, BindingResult result, Model model,
+			@RequestParam List<MultipartFile> tempImg2, Exception exception) throws IOException {
 
 		String view = "AddRoom";
+		boolean flagSize = false;
+		boolean flagType = false;
 
-		if (tempImg.getSize() <= 2097152) {
-			if (checkJPEG(tempImg)) {
-
-				room.setImage(tempImg.getBytes());
-
+		for (int i = 0; i < tempImg2.size(); i++) {
+			MultipartFile tempImg23 = tempImg2.get(i);
+			if (tempImg23.getSize() <= 2097152) {
+				if (checkJPEG(tempImg23)) {
+					Images image = new Images();
+					image.setImage3(tempImg23.getBytes());
+					room.getImage2().add(image);
+				} else {
+					System.out.println("Type not satisfied");
+					flagType = true;
+					break;
+				}
+			} else {
+				System.out.println("File size exceeded");
+				flagSize = true;
+				break;
+			}
+		}
+		if (!flagSize) {
+			if (!flagType) {
 				if (!result.hasErrors()) {
 					try {
 						roomService.addRoom(room);
 						view = "redirect:/allroomslist";
 					} catch (Exception e) {
 						model.addAttribute("errorMessage", new String("Duplicate entry found"));
-						
 					}
-
-				} 
+				}
 			} else {
-				model.addAttribute("imageType", new String("Select a file in .jpg, .jpeg or .png format"));
-				
+				model.addAttribute("imageType2", new String("Select a file in .jpg, .jpeg or .png format"));
 			}
+
 		} else {
-			model.addAttribute("imageType", new String("File size exceeded"));
-			
+			model.addAttribute("imageType2", new String("File size exceeded"));
+
 		}
-		
 		return view;
 	}
 
@@ -95,39 +103,61 @@ public class RoomController {
 	}
 
 	@RequestMapping(value = "/updateroom/{id}", method = RequestMethod.POST)
-	public String updateRoom(@Valid Room room, BindingResult result, Model model, @PathVariable("id") int id, @RequestParam MultipartFile tempImg,
-			Exception exception) throws IOException {
+	public String updateRoom(@Valid Room room, BindingResult result, Model model,
+			@RequestParam("uploadImage") List<MultipartFile> tempImg2, @PathVariable("id") int id, Exception exception)
+			throws IOException {
 
+		boolean flagSize = false;
+		boolean flagType = false;
+		String view = "UpdateRoom";
+
+		System.out.println("======================");
+		System.out.println(tempImg2.size());
 		
+		System.out.println("DEEEPENDRA");
 		room.setId(id);
+		
+		if (tempImg2.size() == 0) {
+			room.setImage2(roomService.getRoomById(id).getImage2());
+		}
 
-		String view = "AddRoom";
-
-		if (tempImg.getSize() <= 2097152) {
-			if (checkJPEG(tempImg)) {
-
-				room.setImage(tempImg.getBytes());
-
+		else {
+			for (int i = 0; i < tempImg2.size(); i++) {
+				MultipartFile tempImg23 = tempImg2.get(i);
+				if (tempImg23.getSize() <= 2097152) {
+					if (checkJPEG(tempImg23)) {
+						Images image = new Images();
+						image.setImage3(tempImg23.getBytes());
+						room.getImage2().add(image);
+					} else {
+						System.out.println("Type not satisfied");
+						flagType = true;
+						break;
+					}
+				} else {
+					System.out.println("File size exceeded");
+					flagSize = true;
+					break;
+				}
+			}
+		}
+		if (!flagSize) {
+			if (!flagType) {
 				if (!result.hasErrors()) {
 					try {
 						roomService.addRoom(room);
 						view = "redirect:/allroomslist";
 					} catch (Exception e) {
 						model.addAttribute("errorMessage", new String("Duplicate entry found"));
-						//view = "AddRoom";
 					}
-
-				} 
+				}
 			} else {
-				model.addAttribute("imageType", new String("Select a file in .jpg, .jpeg or .png format"));
-				//view = "AddRoom";
+				model.addAttribute("imageType2", new String("Select a file in .jpg, .jpeg or .png format"));
 			}
-		} else {
-			model.addAttribute("imageType", new String("File size exceeded"));
-			//view = "AddRoom";
 
+		} else {
+			model.addAttribute("imageType2", new String("File size exceeded"));
 		}
-		
 		return view;
 	}
 
@@ -138,9 +168,18 @@ public class RoomController {
 	}
 
 	@RequestMapping(value = "/allroomslist", method = { RequestMethod.GET })
-	public String allRoomsList(Map<String, Object> model, Model m) {
+	public String allRoomsList(Map<String, Object> model, Model m) throws UnsupportedEncodingException {
+		byte[] encodeBasee64;
+		String base64EncodeImage;
+		for (Room room : roomService.getAllAvailableRoom()) {
+			for (Images image : room.getImage2()) {
+				encodeBasee64 = Base64.encode(image.getImage3());
+				base64EncodeImage = new String(encodeBasee64, "UTF-8");
+				image.setEncodeImage3(base64EncodeImage);
+			}
+		}
+
 		model.put("allrooms", roomService.getAllRoom());
-		
 		return "AllRoomsList";
 	}
 

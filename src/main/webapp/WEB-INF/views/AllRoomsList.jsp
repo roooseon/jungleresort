@@ -19,7 +19,8 @@
 			<th>Room Status</th>
 			<th>Room Category</th>
 			<th>Daily Rent</th>
-			<th>Image</th>
+			<th>Images List</th>
+
 		</tr>
 		<c:forEach items="${allrooms}" var="allrooms">
 			<tr>
@@ -28,19 +29,13 @@
 				<td>${allrooms.roomStatus}</td>
 				<td>${allrooms.roomCategory}</td>
 				<td>${allrooms.dailyRent}</td>
-				<td><img height="30px" width="30px" src =" ${allrooms.image}"/></td>
+				<!-- 				<td><img alt="image" height="30px" width="30px" -->
+				<%-- 					src="data:image/jpeg; base64,${allrooms.encodeImage}" /></td> --%>
+				<td><c:forEach items="${allrooms.image2}" var="imagesSet">
+						<img alt="image" height="30px" width="30px"
+							src="data:image/jpeg; base64,${imagesSet.encodeImage3}" />
 
-				<!-- 				<td><img height="30px" width="30px" -->
-				<%-- 					src="../images/${car.id}.jpg" /></td> --%>
-
-				<%-- 					<td><form action="/cardetailsuser/${car.id}"> --%>
-				<!-- 							<input type="submit" value="View Details" /> -->
-				<!-- 						</form></td> -->
-
-
-				<%-- <td><form action="car/${car.id}" method="post">
-				<input type="submit" name="rent" value= "rent" /> 
-			</form></td> --%>
+					</c:forEach></td>
 
 				<td>
 					<form action="/deleteroom/${allrooms.id}">

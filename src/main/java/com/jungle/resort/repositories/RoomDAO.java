@@ -14,5 +14,6 @@ public interface RoomDAO extends CrudRepository<Room, Integer>{
 	
 	@Query("FROM Room r WHERE r.roomNo= :roomNo")
 	public List<Room> findRoomByNumber(@Param("roomNo") Integer roomNo);
-
+	
+	
 }

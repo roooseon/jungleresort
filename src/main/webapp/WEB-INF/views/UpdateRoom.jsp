@@ -58,7 +58,7 @@ div {
 
 				<tr>
 					<td><form:label path="dailyRent">Daily Rent</form:label></td>
-					<td><form:input path="dailyRent" type="number" value="" /></td>
+					<td><form:input path="dailyRent" type="number" /></td>
 					<td><form:errors path="dailyRent" cssStyle="color:red;" /></td>
 				</tr>
 
@@ -94,10 +94,9 @@ div {
 				</tr>
 
 				<tr>
-					<td><form:label path="tempImg">Image</form:label></td>
-					<td><form:input type="file" path="tempImg"
-							accept=".jpg, .png, .jpeg" /></td>
-					<td><span class="colorRed">${imageType}</span></td>
+					<td><form:label path="tempImg2">Image</form:label></td>
+					<td><form:input type="file" name="file" path="tempImg2" multiple="multiple" accept=".jpg, .png, .jpeg" /></td> 
+ 					<td><span class="colorRed">${imageType2}</span></td> 
 				</tr>
 
 

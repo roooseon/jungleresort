@@ -91,18 +91,18 @@ div {
 				</tr>
 
 				<tr>
-					<td><form:label path="tempImg">Image</form:label></td>
-					<td><form:input type="file" path="tempImg"
-							accept=".jpg, .png, .jpeg" /></td>
-					<td><span class="colorRed">${imageType}</span></td>
+					<td><form:label path="tempImg2">Image</form:label></td>
+					<td><form:input type="file" multiple="multiple"
+							path="tempImg2" accept=".jpg, .png, .jpeg" /></td>
+					<td><span class="colorRed">${imageType2}</span></td>
 				</tr>
-
 				<tr>
 					<td colspan="2"><input type="submit" value="Submit" /></td>
 				</tr>
 
 			</table>
 		</form:form>
+
 	</div>
 </body>
 </html>
