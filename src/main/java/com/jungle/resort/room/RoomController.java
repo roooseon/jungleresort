@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jungle.library.ByteToMultipart;
 import com.jungle.resort.domain.Images;
 import com.jungle.resort.domain.Room;
 
@@ -97,14 +98,20 @@ public class RoomController {
 	}
 
 	@RequestMapping(value = "/updateroom/{id}", method = RequestMethod.GET)
-	public String updateRoom(@ModelAttribute("room") Room room, @PathVariable("id") int id, Model model) {
+	public String updateRoom(@ModelAttribute("room") Room room, @PathVariable("id") int id, Model model) throws UnsupportedEncodingException {
+//		Room room1 = roomService.getRoomById(id);
+//		List<MultipartFile> temp = new ArrayList<MultipartFile>();
+//		for (Images image : room1.getImage2()) {
+//			temp.add(new ByteToMultipart(Base64.encode(image.getImage3())));
+//		}
+//		room1.setTempImg2(temp);
 		model.addAttribute("room", roomService.getRoomById(id));
 		return "UpdateRoom";
 	}
 
 	@RequestMapping(value = "/updateroom/{id}", method = RequestMethod.POST)
 	public String updateRoom(@Valid Room room, BindingResult result, Model model,
-			@RequestParam("uploadImage") List<MultipartFile> tempImg2, @PathVariable("id") int id, Exception exception)
+			@RequestParam List<MultipartFile> tempImg2, @PathVariable("id") int id, Exception exception)
 			throws IOException {
 
 		boolean flagSize = false;
@@ -112,16 +119,15 @@ public class RoomController {
 		String view = "UpdateRoom";
 
 		System.out.println("======================");
-		System.out.println(tempImg2.size());
+		System.out.println(tempImg2.toString());
 		
-		System.out.println("DEEEPENDRA");
 		room.setId(id);
 		
 		if (tempImg2.size() == 0) {
 			room.setImage2(roomService.getRoomById(id).getImage2());
 		}
 
-		else {
+		
 			for (int i = 0; i < tempImg2.size(); i++) {
 				MultipartFile tempImg23 = tempImg2.get(i);
 				if (tempImg23.getSize() <= 2097152) {
@@ -140,7 +146,6 @@ public class RoomController {
 					break;
 				}
 			}
-		}
 		if (!flagSize) {
 			if (!flagType) {
 				if (!result.hasErrors()) {

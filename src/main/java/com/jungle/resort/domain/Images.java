@@ -46,10 +46,4 @@ public class Images {
 	public void setEncodeImage3(String encodeImage3) {
 		this.encodeImage3 = encodeImage3;
 	}
-
-	
-	
-	
-	
-	
 }

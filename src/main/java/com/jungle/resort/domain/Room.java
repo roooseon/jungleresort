@@ -107,8 +107,9 @@ public class Room {
 	public List<MultipartFile> getTempImg2() {
 		return tempImg2;
 	}
-
+	
 	public void setTempImg2(List<MultipartFile> tempImg2) {
+		tempImg2.clear();
 		this.tempImg2 = tempImg2;
 	}
 
@@ -192,9 +193,5 @@ public class Room {
 		} else if (!tempImg2.equals(other.tempImg2))
 			return false;
 		return true;
-	}
-	
-	
-	
-	
+	}	
 }
